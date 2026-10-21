@@ -1,0 +1,120 @@
+name: Build
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - synchronize
+      - opened
+      - reopened
+  push:
+    branches:
+      - main
+jobs:
+
+  # Builds the documentation with each major version of GHC, and shows where
+  # each reference in the documentation of module "Demo" links to.
+  build:
+    name: ghc-${{ matrix.ghc }}
+    runs-on: ubuntu-latest
+    strategy:
+      # Every version should be built, even if another version fails.
+      fail-fast: false
+      matrix:
+        cabal:
+          - '3.16'
+        ghc:
+          - '9.0'
+          - '9.2'
+          - '9.4'
+          - '9.6'
+          - '9.8'
+          - '9.10'
+          - '9.12'
+          - '9.14'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Environment
+        uses: haskell-actions/setup@v2
+        with:
+          ghc-version: ${{ matrix.ghc }}
+          cabal-version: ${{ matrix.cabal }}
+
+      - name: Documentation (Generation)
+        run: |
+          ./check-links.sh | tee check-links.txt
+          {
+            echo '```'
+            cat check-links.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # Copies the documentation into a directory named after the major
+      # version of GHC, together with the output of `check-links.sh`.
+      - name: Documentation (Staging)
+        env:
+          dir: site/ghc-${{ matrix.ghc }}
+        run: |
+          html=$(find dist-newstyle -name Demo.html)
+          mkdir -p "$dir"
+          cp -R "$(dirname "$html")"/. "$dir"
+          cp check-links.txt "$dir"
+
+      - name: Documentation (Upload)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghc-${{ matrix.ghc }}
+          path: site
+
+  # Publishes the documentation for every version of GHC to GitHub Pages, at
+  # https://<owner>.github.io/<repository>/ghc-<version>/.
+  #
+  # This also publishes the documentation of any versions that did build, if
+  # another version failed to build.
+  deploy:
+    name: Deploy
+    needs: build
+    if: |
+      !cancelled()
+      && github.event_name != 'pull_request'
+      && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      # The deployment action needs a Git repository to work in.
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Download
+        uses: actions/download-artifact@v4
+        with:
+          path: site
+          merge-multiple: true
+
+      # Creates a top-level page that links to the documentation built with
+      # each version of GHC, and shows the output of `check-links.sh`.
+      - name: Index
+        run: |
+          {
+            echo '<!DOCTYPE html>'
+            echo '<html><head><meta charset="utf-8">'
+            echo '<title>Haddock links by GHC version</title></head><body>'
+            echo '<h1>Haddock links by GHC version</h1>'
+            printf '%s\n' site/ghc-* | sort -V | while read -r dir; do
+              version=${dir#site/}
+              echo "<h2><a href=\"$version/Demo.html\">$version</a></h2>"
+              echo '<pre>'
+              cat "$dir/check-links.txt"
+              echo '</pre>'
+            done
+            echo '</body></html>'
+          } > site/index.html
+          touch site/.nojekyll
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: site
