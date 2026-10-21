@@ -1,0 +1,4 @@
+GHC 9.2.8:
+  [A] Demo-Target.html#v:foo   ok
+  [B] Demo-Target.html#v:foo   ok
+  [C] Demo-Target.html#v:foo   ok
