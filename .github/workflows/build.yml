@@ -95,11 +95,25 @@ jobs:
           - '3.16'
         ghc:
           - '9.6.7'
+        # A sequence of commits, from oldest to newest, in which each commit is
+        # the parent of the next.
         haddock:
+          - name: 38cb1f9c
+            commit: 38cb1f9c9a13e4811b04d0a63a1b19570b59737c
+          - name: 825d7b91
+            commit: 825d7b91eaafc032beae707908067e97bc0b36d7
+          - name: 71f868e9
+            commit: 71f868e93c381e8ca18b6dd0f7fe85bef28ab7d4
           - name: 2dd45d4b
             commit: 2dd45d4bbaf1e97555150d46e7d8a0bf92aa5364
           - name: 8b6ec7dc
             commit: 8b6ec7dc15866ce52dc35aa986fd41e5097e5abb
+          - name: 1a1dddac
+            commit: 1a1dddac221f84b205a7fd7ea39d641a3dbeb94f
+          - name: 67747ea6
+            commit: 67747ea666c0385070b80516bd7d9849d727cd9e
+          - name: de814638
+            commit: de8146389623023f233d78c02abf71f60ba8c05d
     steps:
       - name: Checkout
         uses: actions/checkout@v6
