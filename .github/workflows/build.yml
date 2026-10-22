@@ -231,29 +231,43 @@ jobs:
 
       # Creates a top-level page that links to the documentation built with
       # each version of GHC and each commit of Haddock, and shows the output
-      # of `check-links.sh`. Versions of GHC are listed from oldest to newest,
-      # followed by commits of Haddock, from oldest to newest.
+      # of `check-links.sh`, in two sections:
+      #
+      # - versions of GHC, from oldest to newest;
+      # - commits of Haddock, from oldest to newest by commit date.
       - name: Index
         run: |
+          shopt -s nullglob
+
+          # Shows the results in the given directory, with a link to the
+          # documentation.
+          entry() {
+            name=${1#site/}
+            echo "<h3><a href=\"$name/Demo.html\">$name</a></h3>"
+            echo '<pre>'
+            cat "$1/check-links.txt"
+            echo '</pre>'
+          }
+
           {
             echo '<!DOCTYPE html>'
             echo '<html><head><meta charset="utf-8">'
             echo '<title>Haddock links by GHC version and Haddock commit</title></head><body>'
             echo '<h1>Haddock links by GHC version and Haddock commit</h1>'
-            {
-              printf '%s\n' site/ghc-* | sort -V
-              # Commits of Haddock, from oldest to newest by commit date.
-              for dir in site/haddock-*; do
-                date=$(sed -n 's/^Commit date: *//p' "$dir/check-links.txt")
-                printf '%s %s\n' "$date" "$dir"
-              done | sort | cut -d ' ' -f 2
-            } | while read -r dir; do
-              version=${dir#site/}
-              echo "<h2><a href=\"$version/Demo.html\">$version</a></h2>"
-              echo '<pre>'
-              cat "$dir/check-links.txt"
-              echo '</pre>'
+
+            echo '<h2>Generated documentation by GHC version</h2>'
+            printf '%s\n' site/ghc-* | sort -V | while read -r dir; do
+              entry "$dir"
             done
+
+            echo '<h2>Generated documentation by Haddock commit</h2>'
+            for dir in site/haddock-*; do
+              date=$(sed -n 's/^Commit date: *//p' "$dir/check-links.txt")
+              printf '%s %s\n' "$date" "$dir"
+            done | sort | cut -d ' ' -f 2 | while read -r dir; do
+              entry "$dir"
+            done
+
             echo '</body></html>'
           } > site/index.html
           touch site/.nojekyll
