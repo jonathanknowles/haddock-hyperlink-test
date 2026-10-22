@@ -9,12 +9,13 @@ identifier's definition.
 The documentation of module [`Demo`](src/Demo.hs) contains several Haddock
 references to identifiers, each imported in a different way, or not at all.
 
-A table in that documentation shows each import, each reference, and the link
-that Haddock produces.
+This experiment checks whether (or not) Haddock transforms each of these
+references into a working hyperlink in the generated documentation.
 
 ## 📄 Results
 
-Documentation and results for each version of GHC are published here:
+Generated documentation and results for every major version of GHC since 8.0,
+and for specific commits of Haddock, are published here:
 
 https://jonathanknowles.github.io/haddock-hyperlink-test/
 
