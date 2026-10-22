@@ -73,14 +73,97 @@ jobs:
           name: ghc-${{ matrix.ghc }}
           path: site
 
-  # Publishes the documentation for every version of GHC to GitHub Pages, at
-  # https://<owner>.github.io/<repository>/ghc-<version>/.
+  # Builds the documentation with Haddock built from source, at each of the
+  # given commits of https://github.com/haskell/haddock, using the same version
+  # of GHC for every commit, and shows where each reference in the
+  # documentation of module "Demo" links to.
+  haddock:
+    name: haddock-${{ matrix.haddock.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      # Every commit should be built, even if another commit fails.
+      fail-fast: false
+      matrix:
+        cabal:
+          - '3.16'
+        ghc:
+          - '9.6.7'
+        haddock:
+          - name: 2dd45d4b
+            commit: 2dd45d4bbaf1e97555150d46e7d8a0bf92aa5364
+          - name: 8b6ec7dc
+            commit: 8b6ec7dc15866ce52dc35aa986fd41e5097e5abb
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Checkout (Haddock)
+        uses: actions/checkout@v6
+        with:
+          repository: haskell/haddock
+          ref: ${{ matrix.haddock.commit }}
+          path: haddock-src
+
+      - name: Environment
+        uses: haskell-actions/setup@v2
+        with:
+          ghc-version: ${{ matrix.ghc }}
+          cabal-version: ${{ matrix.cabal }}
+
+      # Builds Haddock without optimisation, which is much faster.
+      # When run from its build directory, Haddock needs to be told where to
+      # find its resources (such as style sheets) with `haddock_api_datadir`.
+      - name: Haddock (Build)
+        working-directory: haddock-src
+        run: |
+          cabal build exe:haddock -w ghc --ghc-options=-O0
+          echo "HADDOCK=$(cabal list-bin exe:haddock -w ghc)" >> "$GITHUB_ENV"
+          echo "haddock_api_datadir=$PWD/haddock-api/resources" >> "$GITHUB_ENV"
+
+      - name: Documentation (Generation)
+        env:
+          commit: ${{ matrix.haddock.commit }}
+        run: |
+          {
+            echo "Haddock built from haskell/haddock@$commit"
+            ./check-links.sh
+          } | tee check-links.txt
+          {
+            echo '```'
+            cat check-links.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # Copies the documentation into a directory named after the commit of
+      # Haddock, together with the output of `check-links.sh`.
+      - name: Documentation (Staging)
+        env:
+          dir: site/haddock-${{ matrix.haddock.name }}
+        run: |
+          html=$(find dist-newstyle -name Demo.html)
+          mkdir -p "$dir"
+          cp -R "$(dirname "$html")"/. "$dir"
+          cp check-links.txt "$dir"
+
+      - name: Documentation (Upload)
+        uses: actions/upload-artifact@v4
+        with:
+          name: haddock-${{ matrix.haddock.name }}
+          path: site
+
+  # Publishes the documentation for every version of GHC and every commit of
+  # Haddock to GitHub Pages, at:
   #
-  # This also publishes the documentation of any versions that did build, if
-  # another version failed to build.
+  # - https://<owner>.github.io/<repository>/ghc-<version>/
+  # - https://<owner>.github.io/<repository>/haddock-<commit>/
+  #
+  # This also publishes the documentation of any that did build, if another
+  # failed to build.
   deploy:
     name: Deploy
-    needs: build
+    needs:
+      - build
+      - haddock
     if: |
       !cancelled()
       && github.event_name != 'pull_request'
@@ -100,15 +183,19 @@ jobs:
           merge-multiple: true
 
       # Creates a top-level page that links to the documentation built with
-      # each version of GHC, and shows the output of `check-links.sh`.
+      # each version of GHC and each commit of Haddock, and shows the output
+      # of `check-links.sh`.
       - name: Index
         run: |
           {
             echo '<!DOCTYPE html>'
             echo '<html><head><meta charset="utf-8">'
-            echo '<title>Haddock links by GHC version</title></head><body>'
-            echo '<h1>Haddock links by GHC version</h1>'
-            printf '%s\n' site/ghc-* | sort -V | while read -r dir; do
+            echo '<title>Haddock links by GHC version and Haddock commit</title></head><body>'
+            echo '<h1>Haddock links by GHC version and Haddock commit</h1>'
+            {
+              printf '%s\n' site/ghc-* | sort -V
+              printf '%s\n' site/haddock-*
+            } | while read -r dir; do
               version=${dir#site/}
               echo "<h2><a href=\"$version/Demo.html\">$version</a></h2>"
               echo '<pre>'
