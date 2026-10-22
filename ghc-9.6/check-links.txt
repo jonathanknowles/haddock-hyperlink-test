@@ -1,5 +1,5 @@
 GHC 9.6.7:
-  foo                Demo-ModuleA.html#v:foo   found
-  Demo.ModuleB.bar   Demo-ModuleB.html#v:bar   found
-  Demo.ModuleC.baz   Demo-ModuleC.html#v:baz   found
-  D.qux              Demo-ModuleD.html#v:qux   found
+  foo  Demo-ModuleA.html#v:foo   found
+  bar  Demo-ModuleB.html#v:bar   found
+  baz  Demo-ModuleC.html#v:baz   found
+  qux  Demo-ModuleD.html#v:qux   found
