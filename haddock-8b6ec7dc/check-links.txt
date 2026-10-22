@@ -1,4 +1,6 @@
-Haddock built from haskell/haddock@8b6ec7dc15866ce52dc35aa986fd41e5097e5abb
+Commit hash:  8b6ec7dc15866ce52dc35aa986fd41e5097e5abb
+Commit date:  2023-06-01T20:03:02Z
+Commit title: Port the remains of Hi-Haddock
 GHC 9.6.7, Haddock 2.28.0:
   foo  Demo-ModuleA.html#v:foo   ✅ working link
   bar  Demo-ModuleB.html#v:bar   ✅ working link
