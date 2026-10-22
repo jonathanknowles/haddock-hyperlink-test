@@ -234,18 +234,25 @@ jobs:
       # of `check-links.sh`, in two sections:
       #
       # - versions of GHC, from oldest to newest;
-      # - commits of Haddock, from oldest to newest by commit date.
+      # - commits of Haddock, from oldest to newest by commit date, each with a
+      #   link to that commit on GitHub.
       - name: Index
         run: |
           shopt -s nullglob
 
+          # Escapes text for inclusion in HTML.
+          escape() {
+            sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g'
+          }
+
           # Shows the results in the given directory, with a link to the
-          # documentation.
+          # documentation, and with any commit hash linked to its commit.
           entry() {
             name=${1#site/}
             echo "<h3><a href=\"$name/Demo.html\">$name</a></h3>"
             echo '<pre>'
-            cat "$1/check-links.txt"
+            escape < "$1/check-links.txt" | sed -E \
+              's|^(Commit hash: +)([0-9a-f]{40})$|\1<a href="https://github.com/haskell/haddock/commit/\2">\2</a>|'
             echo '</pre>'
           }
 
