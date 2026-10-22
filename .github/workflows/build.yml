@@ -210,7 +210,8 @@ jobs:
 
       # Creates a top-level page that links to the documentation built with
       # each version of GHC and each commit of Haddock, and shows the output
-      # of `check-links.sh`.
+      # of `check-links.sh`. Versions of GHC are listed from oldest to newest,
+      # followed by commits of Haddock, from oldest to newest.
       - name: Index
         run: |
           {
@@ -220,7 +221,11 @@ jobs:
             echo '<h1>Haddock links by GHC version and Haddock commit</h1>'
             {
               printf '%s\n' site/ghc-* | sort -V
-              printf '%s\n' site/haddock-*
+              # Commits of Haddock, from oldest to newest by commit date.
+              for dir in site/haddock-*; do
+                date=$(sed -n 's/^Commit date: *//p' "$dir/check-links.txt")
+                printf '%s %s\n' "$date" "$dir"
+              done | sort | cut -d ' ' -f 2
             } | while read -r dir; do
               version=${dir#site/}
               echo "<h2><a href=\"$version/Demo.html\">$version</a></h2>"
