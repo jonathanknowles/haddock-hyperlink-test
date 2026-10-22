@@ -5,13 +5,16 @@
 # link works.
 #
 # Usage: ./check-links.sh
+#
+# To use a specific build of Haddock, rather than the one that `cabal` would
+# choose, set the `HADDOCK` environment variable to its path.
 
 set -eu
 cd "$(dirname "$0")"
 
 ghc_version=$(ghc --numeric-version)
 
-cabal haddock >/dev/null
+cabal haddock ${HADDOCK:+"--with-haddock=$HADDOCK"} >/dev/null
 
 html=$(find dist-newstyle -path "*/ghc-$ghc_version/*" -name Demo.html)
 dir=$(dirname "$html")

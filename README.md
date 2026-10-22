@@ -37,3 +37,9 @@ following:
 This builds the documentation with `cabal haddock`, using the `ghc` on the
 path, then shows, for each reference, the target of its link, and whether
 that link works.
+
+To use a specific build of Haddock, set `HADDOCK` to its path:
+
+```sh
+HADDOCK=/path/to/haddock ./check-links.sh
+```
