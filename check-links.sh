@@ -29,13 +29,13 @@ for name in $names; do
     href=$(grep -o "href=\"[^\"]*#v:$name\"" "$html" \
         | head -n 1 | sed 's/^href="\(.*\)"$/\1/')
     if [ -z "$href" ]; then
-        result="no link"
+        result="❌ no link"
     elif [ ! -f "$dir/${href%%#*}" ]; then
-        result="page missing"
+        result="❌ page missing"
     elif ! grep -q "id=\"${href#*#}\"" "$dir/${href%%#*}"; then
-        result="anchor missing"
+        result="❌ anchor missing"
     else
-        result="found"
+        result="✅ found"
     fi
     printf '  %-4s %-25s %s\n' "$name" "${href:--}" "$result"
 done
