@@ -134,11 +134,18 @@ jobs:
       # Builds Haddock without optimisation, which is much faster.
       # When run from its build directory, Haddock needs to be told where to
       # find its resources (such as style sheets) with `haddock_api_datadir`.
+      #
+      # Some commits pin a different state of the Hackage index, and some pin
+      # none at all, so every commit is built with the same state, to make the
+      # builds reproducible.
       - name: Haddock (Build)
         working-directory: haddock-src
+        env:
+          INDEX_STATE: 2023-05-22T15:14:29Z
         run: |
-          cabal build exe:haddock -w ghc --ghc-options=-O0
-          echo "HADDOCK=$(cabal list-bin exe:haddock -w ghc)" >> "$GITHUB_ENV"
+          options=(-w ghc --index-state="$INDEX_STATE")
+          cabal build exe:haddock "${options[@]}" --ghc-options=-O0
+          echo "HADDOCK=$(cabal list-bin exe:haddock "${options[@]}")" >> "$GITHUB_ENV"
           echo "haddock_api_datadir=$PWD/haddock-api/resources" >> "$GITHUB_ENV"
 
       # Starts the output with the hash, date, and title of the commit of
