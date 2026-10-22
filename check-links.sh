@@ -2,7 +2,7 @@
 #
 # Builds the documentation with the `ghc` on the path, then shows where each
 # reference in the documentation of module "Demo" links to, and whether that
-# target exists.
+# link works.
 #
 # Usage: ./check-links.sh
 
@@ -31,11 +31,11 @@ for name in $names; do
     if [ -z "$href" ]; then
         result="❌ no link"
     elif [ ! -f "$dir/${href%%#*}" ]; then
-        result="❌ page missing"
+        result="❌ broken link (no such page)"
     elif ! grep -q "id=\"${href#*#}\"" "$dir/${href%%#*}"; then
-        result="❌ anchor missing"
+        result="❌ broken link (no such anchor)"
     else
-        result="✅ found"
+        result="✅ working link"
     fi
     printf '  %-4s %-25s %s\n' "$name" "${href:--}" "$result"
 done
