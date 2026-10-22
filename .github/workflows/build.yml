@@ -141,12 +141,17 @@ jobs:
           echo "HADDOCK=$(cabal list-bin exe:haddock -w ghc)" >> "$GITHUB_ENV"
           echo "haddock_api_datadir=$PWD/haddock-api/resources" >> "$GITHUB_ENV"
 
+      # Starts the output with the hash, date, and title of the commit of
+      # Haddock. The date is the commit date (not the author date) in UTC, in
+      # a format that sorts correctly as a string.
       - name: Documentation (Generation)
         env:
-          commit: ${{ matrix.haddock.commit }}
+          TZ: UTC
         run: |
           {
-            echo "Haddock built from haskell/haddock@$commit"
+            git -C haddock-src log -1 \
+              --date=format-local:%Y-%m-%dT%H:%M:%SZ \
+              --format='Commit hash:  %H%nCommit date:  %cd%nCommit title: %s'
             ./check-links.sh
           } | tee check-links.txt
           {
