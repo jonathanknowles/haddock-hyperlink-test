@@ -4,18 +4,18 @@ An experiment that records how Haddock, as bundled with each major version of
 GHC, hyperlinks references to identifiers, and whether each link leads to the
 identifier's definition.
 
-## References
+## 🔗 References
 
 The references are listed in a table in the documentation of module
 [`Demo`](src/Demo.hs).
 
-## Results
+## 📄 Results
 
 Documentation and results for each version of GHC are published here:
 
 https://jonathanknowles.github.io/haddock-hyperlink-test/
 
-## Running locally
+## 💻 Running locally
 
 ```sh
 ./check-links.sh
