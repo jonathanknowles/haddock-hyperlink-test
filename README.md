@@ -15,6 +15,16 @@ Documentation and results for each version of GHC are published here:
 
 https://jonathanknowles.github.io/haddock-hyperlink-test/
 
+For each reference, the results show the target of its link, and one of the
+following:
+
+| Result              | Meaning                                          |
+|---------------------|--------------------------------------------------|
+| ✅ `found`          | The page exists, and defines the anchor.         |
+| ❌ `anchor missing` | The page exists, but does not define the anchor. |
+| ❌ `page missing`   | The page does not exist.                         |
+| ❌ `no link`        | Haddock produced no link.                        |
+
 ## 💻 Running locally
 
 ```sh
@@ -23,11 +33,4 @@ https://jonathanknowles.github.io/haddock-hyperlink-test/
 
 This builds the documentation with `cabal haddock`, using the `ghc` on the
 path, then shows, for each reference, the target of its link, and whether
-that target exists:
-
-| Result              | Meaning                                          |
-|---------------------|--------------------------------------------------|
-| ✅ `found`          | The page exists, and defines the anchor.         |
-| ❌ `anchor missing` | The page exists, but does not define the anchor. |
-| ❌ `page missing`   | The page does not exist.                         |
-| ❌ `no link`        | Haddock produced no link.                        |
+that target exists.
