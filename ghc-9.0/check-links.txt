@@ -1,5 +1,5 @@
 GHC 9.0.2, Haddock 2.25.1:
-  foo  Demo-ModuleA.html#v:foo   found
-  bar  Demo-ModuleB.html#v:bar   found
-  baz  Demo-ModuleC.html#v:baz   found
-  qux  Demo-ModuleD.html#v:qux   found
+  foo  Demo-ModuleA.html#v:foo   ✅ found
+  bar  Demo-ModuleB.html#v:bar   ✅ found
+  baz  Demo-ModuleC.html#v:baz   ✅ found
+  qux  Demo-ModuleD.html#v:qux   ✅ found
