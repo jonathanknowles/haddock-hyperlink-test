@@ -1,5 +1,5 @@
 GHC 9.8.4, Haddock 2.30.0:
-  foo  Demo-ModuleA.html#v:foo   ✅ found
-  bar  Demo-ModuleB.html#v:bar   ✅ found
-  baz  C.html#v:baz              ❌ page missing
-  qux  Demo-ModuleD.html#v:qux   ✅ found
+  foo  Demo-ModuleA.html#v:foo   ✅ working link
+  bar  Demo-ModuleB.html#v:bar   ✅ working link
+  baz  C.html#v:baz              ❌ broken link (no such page)
+  qux  Demo-ModuleD.html#v:qux   ✅ working link
