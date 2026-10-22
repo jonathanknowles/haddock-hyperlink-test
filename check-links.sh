@@ -9,13 +9,17 @@
 set -eu
 cd "$(dirname "$0")"
 
-version=$(ghc --numeric-version)
-echo "GHC $version:"
+ghc_version=$(ghc --numeric-version)
 
 cabal haddock >/dev/null
 
-html=$(find dist-newstyle -path "*/ghc-$version/*" -name Demo.html)
+html=$(find dist-newstyle -path "*/ghc-$ghc_version/*" -name Demo.html)
 dir=$(dirname "$html")
+
+# The version of Haddock that generated the page, as stated in its footer.
+haddock_version=$(sed -n 's/.*Haddock<\/a> version \([0-9.]*\).*/\1/p' "$html")
+
+echo "GHC $ghc_version, Haddock $haddock_version:"
 
 # The names of the entities that "Demo" refers to.
 names="foo bar baz qux"
