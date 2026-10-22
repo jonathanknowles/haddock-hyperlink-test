@@ -14,7 +14,11 @@ cd "$(dirname "$0")"
 
 ghc_version=$(ghc --numeric-version)
 
-cabal haddock ${HADDOCK:+"--with-haddock=$HADDOCK"} >/dev/null
+# Shows the output of `cabal haddock` only if it fails.
+if ! output=$(cabal haddock ${HADDOCK:+"--with-haddock=$HADDOCK"} 2>&1); then
+    printf '%s\n' "$output" >&2
+    exit 1
+fi
 
 html=$(find dist-newstyle -path "*/ghc-$ghc_version/*" -name Demo.html)
 dir=$(dirname "$html")
