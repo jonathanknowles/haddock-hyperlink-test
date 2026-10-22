@@ -9,6 +9,13 @@ on:
   push:
     branches:
       - main
+
+# Runs each step with `bash -eo pipefail`, so that a step fails if any command
+# in a pipeline fails (such as `check-links.sh` in `check-links.sh | tee`).
+defaults:
+  run:
+    shell: bash
+
 jobs:
 
   # Builds the documentation with each major version of GHC, and shows where
