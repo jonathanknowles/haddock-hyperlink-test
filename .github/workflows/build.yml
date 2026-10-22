@@ -117,6 +117,20 @@ jobs:
           ghc-version: ${{ matrix.ghc }}
           cabal-version: ${{ matrix.cabal }}
 
+      # Removes the Haddock interface files (`.haddock`) installed with GHC,
+      # which the Haddock bundled with GHC wrote.
+      #
+      # Commit 8b6ec7dc changed the format of these files without changing
+      # its version number, so a Haddock built from that commit cannot read
+      # them. Removing them for every commit treats every commit in the same
+      # way.
+      #
+      # This only removes links to entities in other packages, such as `Int`.
+      # No reference in the documentation of module "Demo" refers to such an
+      # entity.
+      - name: Environment (Interfaces)
+        run: ghc-pkg field '*' haddock-interfaces --simple-output | xargs -r rm -fv
+
       # Builds Haddock without optimisation, which is much faster.
       # When run from its build directory, Haddock needs to be told where to
       # find its resources (such as style sheets) with `haddock_api_datadir`.
