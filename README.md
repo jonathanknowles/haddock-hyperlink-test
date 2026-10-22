@@ -4,10 +4,13 @@ An experiment that records how Haddock, as bundled with each major version of
 GHC, hyperlinks references to identifiers, and whether each link leads to the
 identifier's definition.
 
-## 🔗 References
+## 🔬 Method
 
-The references are listed in a table in the documentation of module
-[`Demo`](src/Demo.hs).
+The documentation of module [`Demo`](src/Demo.hs) contains several Haddock
+references to identifiers, each imported in a different way, or not at all.
+
+A table in that documentation shows each import, each reference, and the link
+that Haddock produces.
 
 ## 📄 Results
 
