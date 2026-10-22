@@ -1,4 +1,4 @@
-GHC 9.12.4:
+GHC 9.12.4, Haddock 2.32.0:
   foo  Demo-ModuleA.html#v:foo   found
   bar  Demo-ModuleB.html#v:bar   found
   baz  C.html#v:baz              page missing
