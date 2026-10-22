@@ -1,4 +1,5 @@
 GHC 9.14.1:
-  [A] Demo-Target.html#v:foo   ok
-  [B] T.html#v:foo             BROKEN (that page does not exist)
-  [C] Demo-Decoy.html#v:foo    WRONG (that page exists, but does not define foo)
+  foo                Demo-ModuleA.html#v:foo   found
+  Demo.ModuleB.bar   Demo-ModuleB.html#v:bar   found
+  Demo.ModuleC.baz   Demo-ModuleC.html#v:baz   found
+  D.qux              D.html#v:qux              page missing
