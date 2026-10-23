@@ -28,10 +28,18 @@ haddock_version=$(sed -n 's/.*Haddock<\/a> version \([0-9.]*\).*/\1/p' "$html")
 
 echo "GHC $ghc_version, Haddock $haddock_version:"
 
-# The names of the entities that "Demo" refers to.
-names="foo bar baz qux"
+# The references in the documentation of module "Demo", read from the
+# "Link" column of the table in its source, without quotes.
+references=$(awk -F '|' '/^-- [|] @/ { print $4 }' src/Demo.hs | tr -d "'")
 
-for name in $names; do
+if [ -z "$references" ]; then
+    echo "No references found in the table in src/Demo.hs." >&2
+    exit 1
+fi
+
+printf '%s\n' "$references" | while read -r reference; do
+    # The name of the referenced entity, without any qualifier.
+    name=${reference##*.}
     # The link for a reference to entity `x` has a target ending in `#v:x`.
     href=$(grep -o "href=\"[^\"]*#v:$name\"" "$html" \
         | head -n 1 | sed 's/^href="\(.*\)"$/\1/')
@@ -44,5 +52,5 @@ for name in $names; do
     else
         result="✅ working link"
     fi
-    printf '  %-4s %-25s %s\n' "$name" "${href:--}" "$result"
+    printf '  %-16s %-25s %s\n' "$reference" "${href:--}" "$result"
 done
