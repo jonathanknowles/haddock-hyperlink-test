@@ -12,5 +12,7 @@ library
         Demo.ModuleB
         Demo.ModuleC
         Demo.ModuleD
+        Demo.ModuleE
+        Demo.ModuleF
     build-depends:    base
     default-language: Haskell2010
