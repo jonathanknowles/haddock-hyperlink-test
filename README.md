@@ -22,12 +22,13 @@ https://jonathanknowles.github.io/haddock-hyperlink-test/
 For each reference, the results show the target of its link, and one of the
 following:
 
-| Result                            | Meaning                                          |
-|-----------------------------------|--------------------------------------------------|
-| ✅ `working link`                 | The page exists, and defines the anchor.         |
-| ❌ `broken link (no such page)`   | The page does not exist.                         |
-| ❌ `broken link (no such anchor)` | The page exists, but does not define the anchor. |
-| ❌ `no link`                      | Haddock produced no link.                        |
+| Result                            | Meaning                                                        |
+|-----------------------------------|----------------------------------------------------------------|
+| ✅ `working link`                 | The link leads to the documentation of the referenced entity.  |
+| ❌ `wrong link (another page)`    | The page exists and defines the anchor, but is the wrong page. |
+| ❌ `broken link (no such page)`   | The page does not exist.                                       |
+| ❌ `broken link (no such anchor)` | The page exists, but does not define the anchor.               |
+| ❌ `no link`                      | Haddock produced no link.                                      |
 
 ## 💻 Running locally
 
@@ -37,7 +38,7 @@ following:
 
 This builds the documentation with `cabal haddock`, using the `ghc` on the
 path, then shows, for each reference, the target of its link, and whether
-that link works.
+that link leads to the documentation of the referenced entity.
 
 To use a specific build of Haddock, set `HADDOCK` to its path:
 

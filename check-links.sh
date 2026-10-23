@@ -2,7 +2,7 @@
 #
 # Builds the documentation with the `ghc` on the path, then shows where each
 # reference in the documentation of module "Demo" links to, and whether that
-# link works.
+# link leads to the documentation of the referenced entity.
 #
 # Usage: ./check-links.sh
 #
@@ -28,18 +28,21 @@ haddock_version=$(sed -n 's/.*Haddock<\/a> version \([0-9.]*\).*/\1/p' "$html")
 
 echo "GHC $ghc_version, Haddock $haddock_version:"
 
-# The references in the documentation of module "Demo", read from the
-# "Link" column of the table in its source, without quotes.
-references=$(awk -F '|' '/^-- [|] @/ { print $4 }' src/Demo.hs | tr -d "'")
+# The references in the documentation of module "Demo", each followed by the
+# module that its link is expected to target, read from the "Link" and
+# "Expected Target Module" columns of the table in its source, without quotes.
+references=$(awk -F '|' '/^-- [|] @/ { print $4, $5 }' src/Demo.hs | tr -d "'\"")
 
 if [ -z "$references" ]; then
     echo "No references found in the table in src/Demo.hs." >&2
     exit 1
 fi
 
-printf '%s\n' "$references" | while read -r reference; do
+printf '%s\n' "$references" | while read -r reference module; do
     # The name of the referenced entity, without any qualifier.
     name=${reference##*.}
+    # The page that the link is expected to target.
+    page=$(printf '%s' "$module" | tr . -).html
     # The link for a reference to entity `x` has a target ending in `#v:x`.
     href=$(grep -o "href=\"[^\"]*#v:$name\"" "$html" \
         | head -n 1 | sed 's/^href="\(.*\)"$/\1/')
@@ -49,6 +52,8 @@ printf '%s\n' "$references" | while read -r reference; do
         result="❌ broken link (no such page)"
     elif ! grep -q "id=\"${href#*#}\"" "$dir/${href%%#*}"; then
         result="❌ broken link (no such anchor)"
+    elif [ "${href%%#*}" != "$page" ]; then
+        result="❌ wrong link (another page)"
     else
         result="✅ working link"
     fi
