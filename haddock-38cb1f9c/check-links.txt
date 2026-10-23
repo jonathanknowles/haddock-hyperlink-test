@@ -2,7 +2,9 @@ Commit hash:  38cb1f9c9a13e4811b04d0a63a1b19570b59737c
 Commit date:  2023-05-11T23:02:10Z
 Commit title: Remove GHC debug dep
 GHC 9.6.7, Haddock 2.28.0:
-  foo  Demo-ModuleA.html#v:foo   ✅ working link
-  bar  Demo-ModuleB.html#v:bar   ✅ working link
-  baz  Demo-ModuleC.html#v:baz   ✅ working link
-  qux  Demo-ModuleD.html#v:qux   ✅ working link
+  foo              Demo-ModuleA.html#v:foo   ✅ working link
+  Demo.ModuleB.bar Demo-ModuleB.html#v:bar   ✅ working link
+  C.baz            Demo-ModuleC.html#v:baz   ✅ working link
+  Demo.ModuleD.qux Demo-ModuleD.html#v:qux   ✅ working link
+  quux             Demo-ModuleE.html#v:quux  ✅ working link
+  F.quux           Demo-ModuleF.html#v:quux  ✅ working link
