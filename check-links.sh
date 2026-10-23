@@ -38,14 +38,23 @@ if [ -z "$references" ]; then
     exit 1
 fi
 
+# The names referred to so far, one per line.
+seen=
+
 printf '%s\n' "$references" | while read -r reference module; do
     # The name of the referenced entity, without any qualifier.
     name=${reference##*.}
     # The page that the link is expected to target.
     page=$(printf '%s' "$module" | tr . -).html
+    # References to the same name appear in the documentation in the same
+    # order as in the table, so the nth reference to a name is the nth link
+    # to that name.
+    seen="$seen
+$name"
+    n=$(printf '%s\n' "$seen" | grep -cx "$name")
     # The link for a reference to entity `x` has a target ending in `#v:x`.
     href=$(grep -o "href=\"[^\"]*#v:$name\"" "$html" \
-        | head -n 1 | sed 's/^href="\(.*\)"$/\1/')
+        | sed -n "${n}p" | sed 's/^href="\(.*\)"$/\1/')
     if [ -z "$href" ]; then
         result="❌ no link"
     elif [ ! -f "$dir/${href%%#*}" ]; then
