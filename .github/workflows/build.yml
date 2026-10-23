@@ -9,6 +9,10 @@ on:
   push:
     branches:
       - main
+  # Runs every day, so that the results for moving targets (such as the
+  # nightly build of GHC) stay up to date.
+  schedule:
+    - cron: '17 3 * * *'
 
 # Runs each step with `bash -eo pipefail`, so that a step fails if any command
 # in a pipeline fails (such as `check-links.sh` in `check-links.sh | tee`).
