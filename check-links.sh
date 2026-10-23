@@ -38,6 +38,10 @@ if [ -z "$references" ]; then
     exit 1
 fi
 
+# The length of the longest reference, so that the results line up.
+width=$(printf '%s\n' "$references" \
+    | awk '{ if (length($1) > w) w = length($1) } END { print w }')
+
 # The names referred to so far, one per line.
 seen=
 
@@ -66,5 +70,5 @@ $name"
     else
         result="✅ working link"
     fi
-    printf '  %-16s %-25s %s\n' "$reference" "${href:--}" "$result"
+    printf '  %-*s %-25s %s\n' "$width" "$reference" "${href:--}" "$result"
 done
