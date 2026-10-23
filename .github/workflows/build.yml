@@ -247,7 +247,9 @@ jobs:
 
           # Shows the results in the given directory, with a link to the
           # documentation, and with any commit hash linked to its commit.
+          # Shows nothing if there are no results in the given directory.
           entry() {
+            [ -f "$1/check-links.txt" ] || return 0
             name=${1#site/}
             echo "<h3><a href=\"$name/Demo.html\">$name</a></h3>"
             echo '<pre>'
