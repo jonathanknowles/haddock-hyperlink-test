@@ -1,8 +1,8 @@
-Run date:     2026-10-23T05:07:08Z
-GHC 10.1.20261018, Haddock 2.30.0:
-  foo              Demo-ModuleA.html#v:foo   ✅ working link
-  Demo.ModuleB.bar Demo-ModuleB.html#v:bar   ✅ working link
-  C.baz            C.html#v:baz              ❌ broken link (no such page)
-  Demo.ModuleD.qux Demo-ModuleD.html#v:qux   ✅ working link
-  quux             Demo-ModuleF.html#v:quux  ❌ wrong link (another page)
-  F.quux           F.html#v:quux             ❌ broken link (no such page)
+Run date:     2026-10-23T05:17:58Z
+GHC 10.1.20261022, Haddock 2.30.0:
+  foo               Demo-ModuleA.html#v:foo   ✅ working link
+  Demo.ModuleB.bar  Demo-ModuleB.html#v:bar   ✅ working link
+  C.baz             C.html#v:baz              ❌ broken link (no such page)
+  Demo.ModuleD.qux  Demo-ModuleD.html#v:qux   ✅ working link
+  quux              Demo-ModuleF.html#v:quux  ❌ wrong link (another page)
+  Demo.ModuleF.quux Demo-ModuleF.html#v:quux  ✅ working link
