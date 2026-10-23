@@ -1,0 +1,6 @@
+Run date:     2026-10-23T03:23:39Z
+GHC 10.1.20261018, Haddock 2.30.0:
+  foo  Demo-ModuleA.html#v:foo   ✅ working link
+  bar  Demo-ModuleB.html#v:bar   ✅ working link
+  baz  C.html#v:baz              ❌ broken link (no such page)
+  qux  Demo-ModuleD.html#v:qux   ✅ working link

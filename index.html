@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head><meta charset="utf-8">
-<title>Haddock links by GHC version and Haddock commit</title></head><body>
-<h1>Haddock links by GHC version and Haddock commit</h1>
+<title>Haddock links by GHC version, GHC prerelease, and Haddock commit</title></head><body>
+<h1>Haddock links by GHC version, GHC prerelease, and Haddock commit</h1>
 <h2>Generated documentation by GHC version</h2>
 <h3><a href="ghc-8.0/Demo.html">ghc-8.0</a></h3>
 <pre>
@@ -110,6 +110,43 @@ GHC 9.12.4, Haddock 2.32.0:
 <h3><a href="ghc-9.14/Demo.html">ghc-9.14</a></h3>
 <pre>
 GHC 9.14.1, Haddock 2.33.0:
+  foo  Demo-ModuleA.html#v:foo   ✅ working link
+  bar  Demo-ModuleB.html#v:bar   ✅ working link
+  baz  C.html#v:baz              ❌ broken link (no such page)
+  qux  Demo-ModuleD.html#v:qux   ✅ working link
+</pre>
+<h2>Generated documentation by GHC prerelease</h2>
+<h3><a href="prerelease-9.12/Demo.html">prerelease-9.12</a></h3>
+<pre>
+Run date:     2026-10-23T03:23:54Z
+GHC 9.12.4.20260713, Haddock 2.32.0:
+  foo  Demo-ModuleA.html#v:foo   ✅ working link
+  bar  Demo-ModuleB.html#v:bar   ✅ working link
+  baz  C.html#v:baz              ❌ broken link (no such page)
+  qux  Demo-ModuleD.html#v:qux   ✅ working link
+</pre>
+<h3><a href="prerelease-9.14/Demo.html">prerelease-9.14</a></h3>
+<pre>
+Run date:     2026-10-23T03:24:13Z
+GHC 9.14.1.20260916, Haddock 2.33.0:
+  foo  Demo-ModuleA.html#v:foo   ✅ working link
+  bar  Demo-ModuleB.html#v:bar   ✅ working link
+  baz  C.html#v:baz              ❌ broken link (no such page)
+  qux  Demo-ModuleD.html#v:qux   ✅ working link
+</pre>
+<h3><a href="prerelease-10.0/Demo.html">prerelease-10.0</a></h3>
+<pre>
+Run date:     2026-10-23T03:24:07Z
+GHC 10.0.0.20260917, Haddock 2.34.0:
+  foo  Demo-ModuleA.html#v:foo   ✅ working link
+  bar  Demo-ModuleB.html#v:bar   ✅ working link
+  baz  C.html#v:baz              ❌ broken link (no such page)
+  qux  Demo-ModuleD.html#v:qux   ✅ working link
+</pre>
+<h3><a href="prerelease-nightly/Demo.html">prerelease-nightly</a></h3>
+<pre>
+Run date:     2026-10-23T03:23:39Z
+GHC 10.1.20261018, Haddock 2.30.0:
   foo  Demo-ModuleA.html#v:foo   ✅ working link
   bar  Demo-ModuleB.html#v:bar   ✅ working link
   baz  C.html#v:baz              ❌ broken link (no such page)
