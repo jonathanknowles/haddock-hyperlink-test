@@ -1,7 +1,7 @@
 GHC 8.4.4, Haddock 2.20.0:
-  foo               Demo-ModuleA.html#v:foo   ✅ working link
-  Demo.ModuleB.bar  Demo-ModuleB.html#v:bar   ✅ working link
-  C.baz             Demo-ModuleC.html#v:baz   ✅ working link
-  Demo.ModuleD.qux  Demo-ModuleD.html#v:qux   ✅ working link
-  quux              Demo-ModuleE.html#v:quux  ✅ working link
-  Demo.ModuleF.quux Demo-ModuleF.html#v:quux  ✅ working link
+  foo               Demo-ModuleA.html#v:foo   ✅ pass
+  Demo.ModuleB.bar  Demo-ModuleB.html#v:bar   ✅ pass
+  C.baz             Demo-ModuleC.html#v:baz   ✅ pass
+  Demo.ModuleD.qux  Demo-ModuleD.html#v:qux   ✅ pass
+  quux              Demo-ModuleE.html#v:quux  ✅ pass
+  Demo.ModuleF.quux Demo-ModuleF.html#v:quux  ✅ pass

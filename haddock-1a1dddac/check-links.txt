@@ -2,9 +2,9 @@ Commit hash:  1a1dddac221f84b205a7fd7ea39d641a3dbeb94f
 Commit date:  2023-06-01T20:03:06Z
 Commit title: Stdout for tests
 GHC 9.6.7, Haddock 2.28.0:
-  foo               Demo-ModuleA.html#v:foo   ✅ working link
-  Demo.ModuleB.bar  Demo-ModuleB.html#v:bar   ✅ working link
-  C.baz             C.html#v:baz              ❌ broken link (no such page)
-  Demo.ModuleD.qux  Demo-ModuleD.html#v:qux   ✅ working link
-  quux              Demo-ModuleF.html#v:quux  ❌ wrong link (another page)
-  Demo.ModuleF.quux Demo-ModuleF.html#v:quux  ✅ working link
+  foo               Demo-ModuleA.html#v:foo   ✅ pass
+  Demo.ModuleB.bar  Demo-ModuleB.html#v:bar   ✅ pass
+  C.baz             C.html#v:baz              ❌ fail (no such page)
+  Demo.ModuleD.qux  Demo-ModuleD.html#v:qux   ✅ pass
+  quux              Demo-ModuleF.html#v:quux  ❌ fail (wrong page)
+  Demo.ModuleF.quux Demo-ModuleF.html#v:quux  ✅ pass

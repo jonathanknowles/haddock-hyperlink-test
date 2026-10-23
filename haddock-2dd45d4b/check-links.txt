@@ -2,9 +2,9 @@ Commit hash:  2dd45d4bbaf1e97555150d46e7d8a0bf92aa5364
 Commit date:  2023-05-15T20:45:16Z
 Commit title: Merge pull request #1594 from FinleyMcIlwaine/finley/ghc-9.6-mem-fixes
 GHC 9.6.7, Haddock 2.28.0:
-  foo               Demo-ModuleA.html#v:foo   ✅ working link
-  Demo.ModuleB.bar  Demo-ModuleB.html#v:bar   ✅ working link
-  C.baz             Demo-ModuleC.html#v:baz   ✅ working link
-  Demo.ModuleD.qux  Demo-ModuleD.html#v:qux   ✅ working link
-  quux              Demo-ModuleE.html#v:quux  ✅ working link
-  Demo.ModuleF.quux Demo-ModuleF.html#v:quux  ✅ working link
+  foo               Demo-ModuleA.html#v:foo   ✅ pass
+  Demo.ModuleB.bar  Demo-ModuleB.html#v:bar   ✅ pass
+  C.baz             Demo-ModuleC.html#v:baz   ✅ pass
+  Demo.ModuleD.qux  Demo-ModuleD.html#v:qux   ✅ pass
+  quux              Demo-ModuleE.html#v:quux  ✅ pass
+  Demo.ModuleF.quux Demo-ModuleF.html#v:quux  ✅ pass
