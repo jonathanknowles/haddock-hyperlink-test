@@ -198,10 +198,86 @@ jobs:
           name: haddock-${{ matrix.haddock.name }}
           path: site
 
-  # Publishes the documentation for every version of GHC and every commit of
-  # Haddock to GitHub Pages, at:
+  # Builds the documentation with the Haddock bundled with prereleases of GHC,
+  # and shows where each reference in the documentation of module "Demo"
+  # links to:
+  #
+  # - the latest prerelease of each active release series of GHC, from the
+  #   `prereleases` channel of ghcup;
+  # - the latest nightly build of GHC, from the `nightlies` channel of ghcup.
+  #
+  # These are moving targets: the nightly build changes every day, and each
+  # prerelease version below needs updating when a newer one is published.
+  prerelease:
+    name: prerelease-${{ matrix.ghc.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      # Every prerelease should be built, even if another prerelease fails.
+      fail-fast: false
+      matrix:
+        cabal:
+          - '3.16'
+        ghc:
+          - name: '9.12'
+            version: '9.12.4.20260713'
+          - name: '9.14'
+            version: '9.14.1.20260916'
+          - name: '10.0'
+            version: '10.0.0.20260917'
+          - name: 'nightly'
+            version: 'latest-nightly'
+            channel: 'https://ghc.gitlab.haskell.org/ghcup-metadata/ghcup-nightlies-0.0.7.yaml'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      # The `prereleases` channel of ghcup is always available. The
+      # `nightlies` channel is added only for the nightly build.
+      - name: Environment
+        uses: haskell-actions/setup@v2
+        with:
+          ghc-version: ${{ matrix.ghc.version }}
+          cabal-version: ${{ matrix.cabal }}
+          ghcup-release-channel: ${{ matrix.ghc.channel }}
+
+      # Starts the output with the date and time of this run, since the
+      # result for a moving target can change from one run to the next.
+      - name: Documentation (Generation)
+        env:
+          TZ: UTC
+        run: |
+          {
+            echo "Run date:     $(date +%Y-%m-%dT%H:%M:%SZ)"
+            ./check-links.sh
+          } | tee check-links.txt
+          {
+            echo '```'
+            cat check-links.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # Copies the documentation into a directory named after the release
+      # series (or `nightly`), together with the output of `check-links.sh`.
+      - name: Documentation (Staging)
+        env:
+          dir: site/prerelease-${{ matrix.ghc.name }}
+        run: |
+          html=$(find dist-newstyle -name Demo.html)
+          mkdir -p "$dir"
+          cp -R "$(dirname "$html")"/. "$dir"
+          cp check-links.txt "$dir"
+
+      - name: Documentation (Upload)
+        uses: actions/upload-artifact@v4
+        with:
+          name: prerelease-${{ matrix.ghc.name }}
+          path: site
+
+  # Publishes the documentation for every version and prerelease of GHC, and
+  # every commit of Haddock, to GitHub Pages, at:
   #
   # - https://<owner>.github.io/<repository>/ghc-<version>/
+  # - https://<owner>.github.io/<repository>/prerelease-<series>/
   # - https://<owner>.github.io/<repository>/haddock-<commit>/
   #
   # This also publishes the documentation of any that did build, if another
@@ -210,6 +286,7 @@ jobs:
     name: Deploy
     needs:
       - build
+      - prerelease
       - haddock
     if: |
       !cancelled()
@@ -230,10 +307,11 @@ jobs:
           merge-multiple: true
 
       # Creates a top-level page that links to the documentation built with
-      # each version of GHC and each commit of Haddock, and shows the output
-      # of `check-links.sh`, in two sections:
+      # each version and prerelease of GHC, and each commit of Haddock, and
+      # shows the output of `check-links.sh`, in three sections:
       #
       # - versions of GHC, from oldest to newest;
+      # - prereleases of GHC, from oldest to newest series, then the nightly;
       # - commits of Haddock, from oldest to newest by commit date, each with a
       #   link to that commit on GitHub.
       - name: Index
@@ -261,11 +339,16 @@ jobs:
           {
             echo '<!DOCTYPE html>'
             echo '<html><head><meta charset="utf-8">'
-            echo '<title>Haddock links by GHC version and Haddock commit</title></head><body>'
-            echo '<h1>Haddock links by GHC version and Haddock commit</h1>'
+            echo '<title>Haddock links by GHC version, GHC prerelease, and Haddock commit</title></head><body>'
+            echo '<h1>Haddock links by GHC version, GHC prerelease, and Haddock commit</h1>'
 
             echo '<h2>Generated documentation by GHC version</h2>'
             printf '%s\n' site/ghc-* | sort -V | while read -r dir; do
+              entry "$dir"
+            done
+
+            echo '<h2>Generated documentation by GHC prerelease</h2>'
+            printf '%s\n' site/prerelease-* | sort -V | while read -r dir; do
               entry "$dir"
             done
 
