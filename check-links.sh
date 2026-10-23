@@ -60,15 +60,15 @@ $name"
     href=$(grep -o "href=\"[^\"]*#v:$name\"" "$html" \
         | sed -n "${n}p" | sed 's/^href="\(.*\)"$/\1/')
     if [ -z "$href" ]; then
-        result="❌ no link"
+        result="❌ fail (no link generated)"
     elif [ ! -f "$dir/${href%%#*}" ]; then
-        result="❌ broken link (no such page)"
+        result="❌ fail (no such page)"
     elif ! grep -q "id=\"${href#*#}\"" "$dir/${href%%#*}"; then
-        result="❌ broken link (no such anchor)"
+        result="❌ fail (no such anchor)"
     elif [ "${href%%#*}" != "$page" ]; then
-        result="❌ wrong link (another page)"
+        result="❌ fail (wrong page)"
     else
-        result="✅ working link"
+        result="✅ pass"
     fi
     printf '  %-*s %-25s %s\n' "$width" "$reference" "${href:--}" "$result"
 done

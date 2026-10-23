@@ -22,13 +22,13 @@ https://jonathanknowles.github.io/haddock-hyperlink-test/
 For each reference, the results show the target of its link, and one of the
 following:
 
-| Result                            | Meaning                                                        |
-|-----------------------------------|----------------------------------------------------------------|
-| ✅ `working link`                 | The link leads to the documentation of the referenced entity.  |
-| ❌ `wrong link (another page)`    | The page exists and defines the anchor, but is the wrong page. |
-| ❌ `broken link (no such page)`   | The page does not exist.                                       |
-| ❌ `broken link (no such anchor)` | The page exists, but does not define the anchor.               |
-| ❌ `no link`                      | Haddock produced no link.                                      |
+| Result                        | Meaning                                                                   |
+|-------------------------------|---------------------------------------------------------------------------|
+| ✅ `pass`                     | The link leads to the documentation of the referenced entity.             |
+| ❌ `fail (wrong page)`        | The page exists and defines the anchor, but documents a different entity. |
+| ❌ `fail (no such page)`      | The page does not exist.                                                  |
+| ❌ `fail (no such anchor)`    | The page exists, but does not define the anchor.                          |
+| ❌ `fail (no link generated)` | Haddock produced no link.                                                 |
 
 ## 💻 Running locally
 
