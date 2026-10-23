@@ -1,17 +1,18 @@
 -- | Each row below shows an import, a reference to the entity exported by the
---   imported module, and the link that Haddock generates for that reference.
+--   imported module, the link that Haddock generates for that reference, and
+--   the module that this link is expected to target.
 --
--- +--------------------------------------+------------------------+--------------------+
--- | Import                               | Reference              | Link               |
--- +======================================+========================+====================+
--- | @import Demo.ModuleA (foo)@          | @\'foo\'@              | 'foo'              |
--- +--------------------------------------+------------------------+--------------------+
--- | @import qualified Demo.ModuleB@      | @\'Demo.ModuleB.bar\'@ | 'Demo.ModuleB.bar' |
--- +--------------------------------------+------------------------+--------------------+
--- | @import qualified Demo.ModuleC as C@ | @\'C.baz\'@            | 'C.baz'            |
--- +--------------------------------------+------------------------+--------------------+
--- | @(none)@                             | @\'Demo.ModuleD.qux\'@ | 'Demo.ModuleD.qux' |
--- +--------------------------------------+------------------------+--------------------+
+-- +--------------------------------------+------------------------+--------------------+------------------------+
+-- | Import                               | Reference              | Link               | Expected Target Module |
+-- +======================================+========================+====================+========================+
+-- | @import Demo.ModuleA (foo)@          | @\'foo\'@              | 'foo'              | "Demo.ModuleA"         |
+-- +--------------------------------------+------------------------+--------------------+------------------------+
+-- | @import qualified Demo.ModuleB@      | @\'Demo.ModuleB.bar\'@ | 'Demo.ModuleB.bar' | "Demo.ModuleB"         |
+-- +--------------------------------------+------------------------+--------------------+------------------------+
+-- | @import qualified Demo.ModuleC as C@ | @\'C.baz\'@            | 'C.baz'            | "Demo.ModuleC"         |
+-- +--------------------------------------+------------------------+--------------------+------------------------+
+-- | @(none)@                             | @\'Demo.ModuleD.qux\'@ | 'Demo.ModuleD.qux' | "Demo.ModuleD"         |
+-- +--------------------------------------+------------------------+--------------------+------------------------+
 --
 module Demo (examples) where
 
