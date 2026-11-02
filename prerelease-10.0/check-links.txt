@@ -1,4 +1,4 @@
-Run date:     2026-11-01T10:34:15Z
+Run date:     2026-11-02T11:17:18Z
 GHC 10.0.0.20260917, Haddock 2.34.0:
   foo               Demo-ModuleA.html#v:foo   ✅ pass
   Demo.ModuleB.bar  Demo-ModuleB.html#v:bar   ✅ pass
