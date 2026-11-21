@@ -1,5 +1,5 @@
-Run date:     2026-11-20T11:49:41Z
-GHC 10.1.20261116, Haddock 2.30.0:
+Run date:     2026-11-21T11:14:00Z
+GHC 10.1.20261117, Haddock 2.30.0:
   foo               Demo-ModuleA.html#v:foo   ✅ pass
   Demo.ModuleB.bar  Demo-ModuleB.html#v:bar   ✅ pass
   C.baz             C.html#v:baz              ❌ fail (no such page)
