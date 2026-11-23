@@ -1,7 +1,0 @@
-GHC 9.4.8, Haddock 2.27.0:
-  foo               Demo-ModuleA.html#v:foo   ✅ pass
-  Demo.ModuleB.bar  Demo-ModuleB.html#v:bar   ✅ pass
-  C.baz             Demo-ModuleC.html#v:baz   ✅ pass
-  Demo.ModuleD.qux  Demo-ModuleD.html#v:qux   ✅ pass
-  quux              Demo-ModuleE.html#v:quux  ✅ pass
-  Demo.ModuleF.quux Demo-ModuleF.html#v:quux  ✅ pass
